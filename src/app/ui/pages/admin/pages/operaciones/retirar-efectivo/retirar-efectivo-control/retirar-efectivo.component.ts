@@ -1,6 +1,7 @@
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormUtils } from 'src/app/libs/utils/form-utils';
+import { GeneralService } from 'src/app/ui/shared/services/general.service';
 import { ResultadoRetiro } from '../interfaces/resultado-retiro.interface';
 import { RetirarEfectivoEntity } from 'src/app/core/domain/retirar-efectivo/entities/retirar-efectivo.entity';
 import { RetirarEfectivoFindService } from 'src/app/core/application/retirar-efectivo/use-cases/retirar-efectivo-find.service';
@@ -20,6 +21,7 @@ export class RetirarEfectivoComponent implements OnInit {
   public formUtils: typeof FormUtils = FormUtils;
 
   constructor(
+    private app: GeneralService,
     private fb: FormBuilder,
     private retirarEfectivoFindService: RetirarEfectivoFindService,
   ) {
@@ -73,7 +75,9 @@ export class RetirarEfectivoComponent implements OnInit {
     const montoSolicitado: number = this.myForm.value.valueMonto;
 
     if (montoSolicitado > this.obtenerTotalDisponible()) {
-      alert('El monto solicitado excede el efectivo disponible en el cajero.');
+      const aviso: string =
+        'El monto ingresado supera la cantidad de efectivo disponible en el cajero';
+      this.mostrarAviso(aviso);
       return;
     }
 
@@ -113,12 +117,16 @@ export class RetirarEfectivoComponent implements OnInit {
     this.actualizarBilletesMonedas.set(billetes);
 
     if (montoRestante > 0) {
-      alert(
-        'No se puede retirar la cantidad exacta con los billetes/monedas disponibles.',
+      this.mostrarAviso(
+        'El cajero no dispone de la cantidad exacta en billetes/monedas para completar la operación',
       );
     } else {
-      alert('Retiro exitoso.');
+      this.mostrarAviso('Operación completada con éxito');
       console.log(this.actualizarBilletesMonedas());
     }
+  }
+
+  private mostrarAviso(aviso: string): void {
+    this.app.swal.alert('Notificación', `${aviso}`);
   }
 }
