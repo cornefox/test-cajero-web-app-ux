@@ -1,0 +1,37 @@
+/* Estilo del contenedor del footer */
+.layout-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--surface-border);
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Estilo para los enlaces (nombre ambiente y compañía) */
+.footer-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Estilo para el texto de versión */
+.version {
+    color: #777;
+}
+
+/* Estilo para el texto de copyright */
+.copyright {
+    color: #777;
+}
+
+@media (max-width: 600px) {
+    .layout-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

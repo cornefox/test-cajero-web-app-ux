@@ -1,0 +1,8 @@
+<div class="card flex flex-wrap justify-between">
+  <div class="chart-container w-full p-4">
+    @if (!loading()) {
+      <app-productos-cargados-chart />
+    }
+    <app-skeleton-chart [visible]="loading()" />
+  </div>
+</div>

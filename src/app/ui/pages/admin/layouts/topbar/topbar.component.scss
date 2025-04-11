@@ -1,0 +1,48 @@
+.relative {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // Espaciado adecuado entre el texto y el icono
+    background-color: var(--surface-card);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--content-border-radius);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    span {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px; // Evita que nombres largos desborden
+    }
+}
+
+.layout-topbar-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--primary-color);
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primary-color);
+        color: var(--primary-contrast-color);
+    }
+
+    i {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 550px) {
+    .layout-topbar-actions span {
+        display: none;
+    }
+}
