@@ -1,7 +1,9 @@
+import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
 import { FormUtils } from 'src/app/libs/utils/form-utils';
 import { LoaderService } from 'src/app/ui/shared/services/loader.service';
+import { RetirarEfectivoEntity } from 'src/app/core/domain/retirar-efectivo/entities/retirar-efectivo.entity';
+import { RetirarEfectivoFindService } from 'src/app/core/application/retirar-efectivo/use-cases/retirar-efectivo-find.service';
 
 @Component({
   selector: 'app-retirar-efectivo',
@@ -9,42 +11,52 @@ import { LoaderService } from 'src/app/ui/shared/services/loader.service';
   styleUrls: ['./retirar-efectivo.component.scss'],
   templateUrl: './retirar-efectivo.component.html',
 })
-export class RetirarEfectivoComponent {
+export class RetirarEfectivoComponent implements OnInit {
   public monto: number = 0;
   public resultado: { denominacion: string; cantidad: number }[] = [];
 
   public myForm: FormGroup;
   public formUtils: typeof FormUtils = FormUtils;
 
-  public billetesMonedas: any[] = [
-    { cantidadDisponible: 2, denominacion: 1000, tipo: 'Billete' },
-    { cantidadDisponible: 5, denominacion: 500, tipo: 'Billete' },
-    { cantidadDisponible: 10, denominacion: 200, tipo: 'Billete' },
-    { cantidadDisponible: 20, denominacion: 100, tipo: 'Billete' },
-    { cantidadDisponible: 30, denominacion: 50, tipo: 'Billete' },
-    { cantidadDisponible: 40, denominacion: 20, tipo: 'Billete' },
-    { cantidadDisponible: 50, denominacion: 10, tipo: 'Moneda' },
-    { cantidadDisponible: 100, denominacion: 5, tipo: 'Moneda' },
-    { cantidadDisponible: 200, denominacion: 2, tipo: 'Moneda' },
-    { cantidadDisponible: 300, denominacion: 1, tipo: 'Moneda' },
-    { cantidadDisponible: 100, denominacion: 0.5, tipo: 'Moneda' },
-  ];
+  public billetesMonedas: WritableSignal<RetirarEfectivoEntity[]> = signal([]);
 
   constructor(
     private fb: FormBuilder,
     private loaderService: LoaderService,
+    private retirarEfectivoFindService: RetirarEfectivoFindService,
   ) {
     this.myForm = this.fb.group({
       valueMonto: ['', [Validators.required, Validators.min(0.5)]],
     });
+  }
 
-    // Ordena las denominaciones de mayor a menor al inicio
-    this.billetesMonedas.sort((a, b) => b.denominacion - a.denominacion);
+  public ngOnInit(): void {
+    this.initializeComponent();
+  }
+
+  public async initializeComponent(): Promise<void> {
+    try {
+      await this.getData();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getData(): Promise<void> {
+    try {
+      const response: any = await this.retirarEfectivoFindService.findAll();
+      this.billetesMonedas.set(response);
+      console.log(`Respuesta `, response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public getTotalDisponible(): number {
-    return this.billetesMonedas.reduce(
-      (acc, item) => acc + item.denominacion * item.cantidadDisponible,
+    const data: RetirarEfectivoEntity[] = this.billetesMonedas();
+    return data.reduce(
+      (acc, item) =>
+        acc + (item.denominacion ?? 0) * (item.cantidadDisponible ?? 0),
       0,
     );
   }
@@ -59,32 +71,41 @@ export class RetirarEfectivoComponent {
       return;
     }
 
-    let montoSolicitado: number = this.myForm.value.valueMonto;
+    const montoSolicitado: number = this.myForm.value.valueMonto;
 
     if (montoSolicitado > this.getTotalDisponible()) {
       alert('El monto solicitado excede el efectivo disponible en el cajero.');
       return;
     }
 
+    // Obtenemos una copia del array actual de billetes/monedas
+    const billetes = [...this.billetesMonedas()];
     this.resultado = [];
     let montoRestante = montoSolicitado;
 
-    for (const item of this.billetesMonedas) {
-      if (montoRestante >= item.denominacion && item.cantidadDisponible > 0) {
-        let cantidad: number = Math.floor(montoRestante / item.denominacion);
-        cantidad = Math.min(cantidad, item.cantidadDisponible);
+    for (const item of billetes) {
+      const denominacion = item.denominacion ?? 0;
+      const cantidadDisponible = item.cantidadDisponible ?? 0;
+
+      if (montoRestante >= denominacion && cantidadDisponible > 0) {
+        let cantidad: number = Math.floor(montoRestante / denominacion);
+        cantidad = Math.min(cantidad, cantidadDisponible);
 
         if (cantidad > 0) {
           this.resultado.push({
-            denominacion: `${item.denominacion} MXN (${item.tipo})`,
+            denominacion: `${denominacion} MXN (${item.tipo})`,
             cantidad,
           });
-          montoRestante -= cantidad * item.denominacion;
-          montoRestante = parseFloat(montoRestante.toFixed(2)); // Evitar errores por decimales
-          item.cantidadDisponible -= cantidad;
+
+          montoRestante -= cantidad * denominacion;
+          montoRestante = parseFloat(montoRestante.toFixed(2)); // Control de decimales
+          item.cantidadDisponible = cantidadDisponible - cantidad;
         }
       }
     }
+
+    // Actualizamos el valor del signal
+    this.billetesMonedas.set(billetes);
 
     if (montoRestante > 0) {
       alert(
