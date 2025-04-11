@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GeneralService } from 'src/app/ui/shared/services/general.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +9,10 @@ import { Router } from '@angular/router';
   templateUrl: './atm.component.html',
 })
 export class AtmComponent {
-  constructor(private router: Router) {}
+  constructor(
+    private app: GeneralService,
+    private router: Router,
+  ) {}
 
   public irConsultarSaldo(): void {
     this.router.navigate(['admin/operaciones/consultar-saldo']);
@@ -20,6 +24,9 @@ export class AtmComponent {
     this.router.navigate(['admin/operaciones/depositar-efectivo']);
   }
   public salir(): void {
-    alert('Saliendo de la aplicación');
+    this.mostrarAviso('Saliendo de la aplicación');
+  }
+  private mostrarAviso(aviso: string): void {
+    this.app.swal.alert('Notificación', `${aviso}`);
   }
 }

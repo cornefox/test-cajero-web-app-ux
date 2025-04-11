@@ -1,7 +1,7 @@
 export const environment: any = {
   API: {
     EMPRESA: {
-      URL: 'https://api.test-cajero.com.mx/dev',
+      URL: 'https://api.test-cajero.com.mx/dev', // EP simulado, no se conecta a  la base de datos
     },
   },
   APP: {

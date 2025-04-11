@@ -1,13 +1,13 @@
 <div class="flex flex-col gap-2">
-    <button type="button" class="custom-button">
+    <button (click)="goPerfil()" type="button" class="custom-button">
         <i class="pi pi-user"></i>
         <span>Perfil</span>
     </button>
-    <button type="button" class="custom-button">
+    <button (click)="changePaswoord()" type="button" class="custom-button">
         <i class="pi pi-key"></i>
         <span>Cambiar contraseña</span>
     </button>
-    <button type="button" class="custom-button" (click)="logout()">
+    <button (click)="logout()" type="button" class="custom-button">
         <i class="pi pi-sign-out"></i>
         <span>Cerrar sesión</span>
     </button>

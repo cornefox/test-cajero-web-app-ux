@@ -2,9 +2,9 @@
 const primeui = require('tailwindcss-primeui');
 
 module.exports = {
-  darkMode: ['class', '[class="app-dark"]'],  // Se recomienda usar 'class' para mayor consistencia
+  darkMode: ['class', '[class="app-dark"]'],
   content: ['./src/**/*.{html,ts,scss,css}', './index.html'],
-  plugins: [primeui],  // Carga de TailwindCSS PrimeUI
+  plugins: [primeui],
   theme: {
     screens: {
       sm: '576px',
