@@ -1,0 +1,44 @@
+/* bloque__elemento--modificador */
+.app-container {
+  @apply flex justify-center items-center h-screen;
+}
+
+.atm-dashboard {
+  @apply max-w-[1000px] w-[90%] py-16 px-8 text-center bg-[#f8f9fa] rounded-2xl shadow-lg;
+
+  &__title {
+    @apply text-2xl mb-8 text-[#2c3e50];
+  }
+
+  &__options {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+
+  &__button {
+    @apply flex flex-col items-center p-6 rounded-xl text-white font-semibold cursor-pointer transition-all ease-in-out duration-200;
+
+    &--balance {
+      @apply bg-[#007bff];
+    }
+
+    &--withdraw {
+      @apply bg-[#28a745];
+    }
+
+    &--deposit {
+      @apply bg-[#ffc107] text-[#212529];
+    }
+
+    &--exit {
+      @apply bg-[#dc3545];
+    }
+
+    &__icon {
+      @apply text-3xl mb-2;
+    }
+
+    &:hover {
+      @apply transform translate-y-[-4px] shadow-xl;
+    }
+  }
+}

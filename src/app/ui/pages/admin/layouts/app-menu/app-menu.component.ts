@@ -19,40 +19,23 @@ export class AppMenuComponent implements OnInit {
             label: 'Inicio',
             routerLink: ['/admin'],
           },
-        ],
-        label: '',
-      },
-      {
-        items: [
           {
-            icon: 'pi pi-chart-bar',
-            label: 'Panel de control',
-            routerLink: ['/'],
+            icon: 'pi pi-wallet',
+            label: 'Consultar saldo',
+            routerLink: ['/saldo'],
+          },
+          {
+            icon: 'pi pi-arrow-down',
+            label: 'Retirar efectivo',
+            routerLink: ['/retiro'],
+          },
+          {
+            icon: 'pi pi-arrow-up',
+            label: 'Depositar efectivo',
+            routerLink: ['/deposito'],
           },
         ],
-        label: '',
-      },
-      {
-        icon: 'pi pi-fw pi-cog',
-        items: [
-          {
-            icon: 'pi pi-fw pi-users',
-            items: [
-              {
-                icon: 'pi pi-fw pi-id-card',
-                label: 'Catálogo de usuarios',
-                routerLink: ['/'],
-              },
-              {
-                icon: 'pi pi-fw pi-key',
-                label: 'Roles de usuario',
-                routerLink: ['/'],
-              },
-            ],
-            label: 'Usuarios y roles',
-          },
-        ],
-        label: 'Administración',
+        label: 'Operaciones',
       },
     ];
   }

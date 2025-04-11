@@ -1,8 +1,27 @@
-<div class="card flex flex-wrap justify-between">
-  <div class="chart-container w-full p-4">
-    @if (!loading()) {
-      <app-productos-cargados-chart />
-    }
-    <app-skeleton-chart [visible]="loading()" />
+<div class="app-container">
+  <div class="atm-dashboard">
+    <h2 class="atm-dashboard__title">Bienvenido al Cajero</h2>
+
+    <div class="atm-dashboard__options">
+      <button class="atm-dashboard__button atm-dashboard__button--balance">
+        <i class="atm-dashboard__button__icon pi pi-wallet"></i>
+        <span>Consultar Saldo</span>
+      </button>
+
+      <button class="atm-dashboard__button atm-dashboard__button--withdraw">
+        <i class="atm-dashboard__button__icon pi pi-arrow-down"></i>
+        <span>Retirar Efectivo</span>
+      </button>
+
+      <button class="atm-dashboard__button atm-dashboard__button--deposit">
+        <i class="atm-dashboard__button__icon pi pi-arrow-up"></i>
+        <span>Depositar Efectivo</span>
+      </button>
+
+      <button class="atm-dashboard__button atm-dashboard__button--exit">
+        <i class="atm-dashboard__button__icon pi pi-sign-out"></i>
+        <span>Salir</span>
+      </button>
+    </div>
   </div>
 </div>
