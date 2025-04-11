@@ -9,7 +9,7 @@ const routes: Routes = [
       {
         component: DashboardControlComponent, // Carga el Dashboard cuando el usuario accede a /admin
         path: '',
-        title: 'Empresa | Dashboard',
+        title: 'Test Cajero | Dashboard',
       },
     ],
     component: AdminLayoutComponent,

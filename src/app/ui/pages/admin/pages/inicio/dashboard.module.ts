@@ -1,5 +1,6 @@
 import { Chart, registerables } from 'chart.js';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ChartModule } from 'primeng/chart';
 import { CommonModule } from '@angular/common';
 import { DashboardControlComponent } from './dashboard-control/dashboard-control.component';
@@ -8,7 +9,6 @@ import { LoaderModule } from 'src/app/ui/shared/components/shared-loading/loader
 import { NgModule } from '@angular/core';
 import { ProductosCargadosChartComponent } from './charts/productos-cargados-chart/productos-cargados-chart.component';
 import { SharedModule } from 'primeng/api';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 Chart.register(...registerables, ChartDataLabels);
 
