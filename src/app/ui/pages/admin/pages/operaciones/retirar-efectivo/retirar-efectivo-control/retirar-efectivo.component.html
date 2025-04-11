@@ -31,18 +31,29 @@
   </div>
 </div>
 @if (cantidadDenominacion().length > 0) {
-  <div class="animate__animated animate__fadeInRight">
-    <div class="atm-retiro-resultado-panel">
-      <h4 class="atm-retiro-resultado-panel__title">
-        Billetes y Monedas a Entregar:
-      </h4>
-      <ul class="atm-retiro-resultado-panel__lista">
-        @for(item of cantidadDenominacion(); track $index) {
-          <li  class="atm-retiro-resultado-panel__item">
-            {{ item.denominacion }} x {{ item.cantidad }}
-          </li>
-        }
-      </ul>
+<div class="animate__animated animate__fadeInRight">
+  <div class="atm-retiro-resultado-panel">
+    <h4 class="atm-retiro-resultado-panel__title">
+      Billetes y Monedas a Entregar:
+    </h4>
+    <div class="atm-retiro-resultado-panel__table-wrapper">
+      <table class="atm-retiro-resultado-panel__table">
+        <thead>
+          <tr>
+            <th scope="col">Denominación</th>
+            <th scope="col">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(item of cantidadDenominacion(); track $index) {
+          <tr>
+            <td>{{ item.denominacion }}</td>
+            <td>{{ item.cantidad }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 }
