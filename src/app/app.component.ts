@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  title = 'initial-template';
+  title = 'test-cajero-web-app-ux';
 }
