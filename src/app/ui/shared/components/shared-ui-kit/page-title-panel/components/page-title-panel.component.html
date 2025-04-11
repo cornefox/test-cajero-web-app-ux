@@ -1,0 +1,22 @@
+<div class="mb-6 p-6 bg-white shadow-md rounded-lg">
+  <div class="grid grid-cols-1 xl:grid-cols-2 items-center">
+    <!-- Título y descripción -->
+    <div class="text-center xl:text-left">
+      <h2 class="text-xl font-semibold mb-2">
+        {{ title }}
+      </h2>
+      <span class="text-sm text-gray-500">
+        {{ subtitle }}
+      </span>
+    </div>
+
+    <!-- Botones -->
+    <div
+      class="button-container xl:text-right text-center p-4 space-y-2 xl:space-y-0 xl:justify-end xl:flex-row flex-col sm:space-x-4">
+      <p-button *ngIf="primaryButtonLabel" class="layout-topbar-action" type="button" [label]="primaryButtonLabel"
+        [icon]="primaryButtonIcon" (click)="primaryButtonClick.emit()" />
+      <p-button *ngIf="secondaryButtonLabel" type="button" [label]="secondaryButtonLabel" [icon]="secondaryButtonIcon"
+        severity="secondary" (click)="secondaryButtonClick.emit()" />
+    </div>
+  </div>
+</div>

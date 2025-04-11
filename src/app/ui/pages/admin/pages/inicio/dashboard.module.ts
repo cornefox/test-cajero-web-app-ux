@@ -17,15 +17,15 @@ Chart.register(...registerables, ChartDataLabels);
 @NgModule({
   declarations: [DashboardControlComponent, ProductosCargadosChartComponent],
   imports: [
+    ButtonModule,
+    ChartModule,
     CommonModule,
     DashboardRoutingModule,
     FormsModule,
     LoaderModule,
     ReactiveFormsModule,
-    SharedModule,
-    ChartModule,
-    ButtonModule,
     RippleModule,
+    SharedModule,
   ],
 })
 export class DashboardModule {}

@@ -1,0 +1,8 @@
+.panel-container {
+  @apply p-6 md:p-8 my-6 bg-white shadow-xl rounded-2xl border border-gray-100;
+
+  /* Contenedor interno sin repetir el sombreado */
+  &__inner {
+    @apply p-6 bg-white rounded-lg border-gray-200;
+  }
+}
