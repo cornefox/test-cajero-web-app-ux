@@ -11,6 +11,36 @@ const routes: Routes = [
         path: '',
         title: 'Test Cajero | Dashboard',
       },
+      {
+        loadChildren: async () => {
+          const m: any = await import(
+            './pages/operaciones/consultar-saldo/consultar-saldo.module'
+          );
+          return m.ConsultarSaldoModule;
+        },
+        path: 'operaciones/consultar-saldo',
+        title: 'Test Cajero | Operaciones',
+      },
+      {
+        loadChildren: async () => {
+          const m: any = await import(
+            './pages/operaciones/depositar-efectivo/depositar-efectivo.module'
+          );
+          return m.DepositarEfectivoModule;
+        },
+        path: 'operaciones/depositar-efectivo',
+        title: 'Test Cajero | Operaciones',
+      },
+      {
+        loadChildren: async () => {
+          const m: any = await import(
+            './pages/operaciones/retirar-efectivo/retirar-efectivo.module'
+          );
+          return m.RetirarEfectivoModule;
+        },
+        path: 'operaciones/retirar-efectivo',
+        title: 'Test Cajero | Operaciones',
+      },
     ],
     component: AdminLayoutComponent,
     path: '',
