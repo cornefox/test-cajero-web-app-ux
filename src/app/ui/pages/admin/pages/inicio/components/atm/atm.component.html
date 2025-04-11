@@ -3,22 +3,22 @@
     <h2 class="atm-dashboard__title">Bienvenido al Cajero</h2>
 
     <div class="atm-dashboard__options">
-      <button class="atm-dashboard__button atm-dashboard__button--balance">
+      <button (click)="irConsultarSaldo()" class="atm-dashboard__button atm-dashboard__button--balance">
         <i class="atm-dashboard__button__icon pi pi-wallet"></i>
         <span>Consultar Saldo</span>
       </button>
 
-      <button class="atm-dashboard__button atm-dashboard__button--withdraw">
+      <button (click)="irRetirarEfectivo()" class="atm-dashboard__button atm-dashboard__button--withdraw">
         <i class="atm-dashboard__button__icon pi pi-arrow-down"></i>
         <span>Retirar Efectivo</span>
       </button>
 
-      <button class="atm-dashboard__button atm-dashboard__button--deposit">
+      <button (click)="irDepositarfectivo()" class="atm-dashboard__button atm-dashboard__button--deposit">
         <i class="atm-dashboard__button__icon pi pi-arrow-up"></i>
         <span>Depositar Efectivo</span>
       </button>
 
-      <button class="atm-dashboard__button atm-dashboard__button--exit">
+      <button (click)="salir()" class="atm-dashboard__button atm-dashboard__button--exit">
         <i class="atm-dashboard__button__icon pi pi-sign-out"></i>
         <span>Salir</span>
       </button>

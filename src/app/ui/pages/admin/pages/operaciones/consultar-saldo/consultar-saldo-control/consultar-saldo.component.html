@@ -1,1 +1,13 @@
-<p>consultar-saldo works!</p>
+<div class="animate__animated animate__fadeInRight">
+  <div class="app-container">
+    <div class="atm-balance">
+      <div class="atm-balance__icon">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <h2 class="atm-balance__title">Tu saldo disponible</h2>
+      <p class="atm-balance__amount">{{ saldo() | number: '1.2-2' }} MXN</p>
+      <p class="atm-balance__message">Gracias por usar nuestro cajero automático.</p>
+      <button class="atm-balance__button" routerLink="/">Volver al inicio</button>
+    </div>
+  </div>
+</div>
