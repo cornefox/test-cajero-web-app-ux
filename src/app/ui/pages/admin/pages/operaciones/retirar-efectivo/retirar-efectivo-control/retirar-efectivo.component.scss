@@ -1,0 +1,65 @@
+/* SCSS modular con Tailwind y BEM (Block Element Modifier) */
+.atm-retiro {
+  @apply bg-white rounded-3xl shadow-2xl p-8 max-w-[500px] w-full text-center !important;
+  margin: 0 auto;
+
+  &__icon {
+    @apply mb-4;
+    text-align: center;
+
+    i {
+      color: #007bff;
+    }
+  }
+
+  &__title {
+    @apply text-2xl font-semibold text-gray-800 mb-6;
+  }
+
+  &__form {
+    @apply flex flex-col items-center gap-6 w-full;
+  }
+
+  &__campo {
+    @apply flex flex-col w-full text-left;
+
+    &-label {
+      @apply block mb-2 text-gray-700 text-base font-medium;
+    }
+
+    &-input {
+      @apply w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition-all duration-300 !important;
+      background-color: #f9f9f9;
+
+      &--error {
+        @apply border-red-500 focus:ring-red-500 !important;
+      }
+    }
+
+
+    &-error {
+      @apply text-sm text-red-600 mt-1;
+    }
+  }
+
+  &__button {
+    @apply py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow transition-transform duration-200 hover:-translate-y-1 w-full;
+    text-align: center;
+  }
+
+  &__resultado {
+    @apply mt-6;
+  }
+
+  &__message {
+    @apply text-sm text-gray-600 mt-6;
+  }
+}
+
+.atm-retiro-resultado-panel {
+  @apply bg-white rounded-3xl shadow-xl p-6 mt-10 max-w-[500px] w-full mx-auto text-center;
+
+  &__title {
+    @apply text-xl font-semibold text-gray-800 mb-4;
+  }
+}

@@ -1,1 +1,45 @@
-<p>retirar-efectivo works!</p>
+<div class="animate__animated animate__fadeInRight">
+  <div class="app-container">
+    <div class="atm-retiro">
+      <div class="atm-retiro__icon">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <h2 class="atm-retiro__title">Retirar Efectivo</h2>
+      <form [formGroup]="myForm" (ngSubmit)="calcularRetiro()" autocomplete="off" class="atm-retiro__form">
+        <div class="atm-retiro__campo">
+          <label for="monto" class="atm-retiro__campo-label">Monto a Retirar</label>
+          <input id="monto" type="text" formControlName="valueMonto" class="atm-retiro__campo-input" [ngClass]="{
+                'atm-retiro__campo-input--error':
+                  myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched
+              }" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')" />
+
+          @if (myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched) {
+          <div class="atm-retiro__campo-error">
+            {{ formUtils.getFieldError(myForm, 'valueMonto') }}
+          </div>
+          }
+        </div>
+        <button type="submit" class="atm-retiro__button">
+          Calcular
+        </button>
+      </form>
+      <p class="atm-retiro__message">
+        Efectivo restante en el cajero:
+        <strong>{{ getEfectivoRestante() | currency: 'MXN' }}</strong>
+      </p>
+    </div>
+  </div>
+</div>
+@if (resultado.length > 0) {
+<div class="atm-retiro-resultado-panel animate__animated animate__fadeInRight">
+  <h4 class="atm-retiro-resultado-panel__title">
+    Billetes y Monedas a Entregar:
+  </h4>
+
+  <ul class="atm-retiro-resultado-panel__lista">
+    <li *ngFor="let item of resultado" class="atm-retiro-resultado-panel__item">
+      {{ item.denominacion }} x {{ item.cantidad }}
+    </li>
+  </ul>
+</div>
+}

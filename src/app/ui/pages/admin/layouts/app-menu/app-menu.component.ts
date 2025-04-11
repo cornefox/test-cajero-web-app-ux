@@ -26,15 +26,15 @@ export class AppMenuComponent implements OnInit {
             routerLinkActiveOptions: { exact: false },
           },
           {
-            icon: 'pi pi-arrow-up',
-            label: 'Depositar efectivo',
-            routerLink: ['operaciones/depositar-efectivo'],
-            routerLinkActiveOptions: { exact: false },
-          },
-          {
             icon: 'pi pi-arrow-down',
             label: 'Retirar efectivo',
             routerLink: ['operaciones/retirar-efectivo'],
+            routerLinkActiveOptions: { exact: false },
+          },
+          {
+            icon: 'pi pi-arrow-up',
+            label: 'Depositar efectivo',
+            routerLink: ['operaciones/depositar-efectivo'],
             routerLinkActiveOptions: { exact: false },
           },
         ],
