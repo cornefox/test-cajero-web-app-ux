@@ -58,7 +58,7 @@
 
 /* Estilos para el panel de resultados */
 .atm-retiro-resultado-panel {
-  @apply bg-white rounded-3xl shadow-xl p-6 mt-10 max-w-[500px] w-full mx-auto text-center;
+  @apply bg-white rounded-3xl shadow-xl p-6 max-w-[500px] w-full mx-auto text-center;
 
   &__title {
     @apply text-xl font-semibold text-gray-800 mb-4;

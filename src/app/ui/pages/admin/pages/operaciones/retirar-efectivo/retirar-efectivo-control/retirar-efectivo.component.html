@@ -1,59 +1,87 @@
 <div class="animate__animated animate__fadeInRight">
+
   <div class="app-container">
-    <div class="atm-retiro">
-      <div class="atm-retiro__icon">
-        <i class="pi pi-wallet"></i>
-      </div>
-      <h2 class="atm-retiro__title">Retirar Efectivo</h2>
-      <form class="atm-retiro__form" [formGroup]="myForm" (ngSubmit)="calcularRetiro()" autocomplete="off">
-        <div class="atm-retiro__campo">
-          <label class="atm-retiro__campo-label" for="valueMonto">Monto a Retirar</label>
-          <input class="atm-retiro__campo-input" type="text" formControlName="valueMonto" [ngClass]="{
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-24 items-start">
+      <!-- Columna 1: Formulario -->
+      <div class="atm-retiro">
+        <div class="atm-retiro__icon">
+          <i class="pi pi-wallet"></i>
+        </div>
+        <h2 class="atm-retiro__title">Retirar Efectivo</h2>
+        <form class="atm-retiro__form" [formGroup]="myForm" (ngSubmit)="calcularRetiro()" autocomplete="off">
+          <div class="atm-retiro__campo">
+            <label class="atm-retiro__campo-label" for="valueMonto">Monto a Retirar</label>
+            <input class="atm-retiro__campo-input" type="text" formControlName="valueMonto" [ngClass]="{
                 'atm-retiro__campo-input--error':
                   myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched
               }" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')" />
 
-          @if (myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched) {
-          <div class="atm-retiro__campo-error">
-            {{ formUtils.getFieldError(myForm, 'valueMonto') }}
+            @if (myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched) {
+            <div class="atm-retiro__campo-error">
+              {{ formUtils.getFieldError(myForm, 'valueMonto') }}
+            </div>
+            }
           </div>
-          }
+          <button class="atm-retiro__button" type="submit">
+            Calcular
+          </button>
+        </form>
+        <p class="atm-retiro__message">
+          Efectivo restante en el cajero:
+          <strong>{{ obtenerEfectivoRestante() | currency: 'MXN' }}</strong>
+        </p>
+
+        @if (cantidadDenominacion().length > 0) {
+        <div class="animate__animated animate__fadeInRight">
+          <div class="atm-retiro-resultado-panel">
+            <h4 class="atm-retiro-resultado-panel__title">
+              Billetes y Monedas a Entregar:
+            </h4>
+            <div class="atm-retiro-resultado-panel__table-wrapper">
+              <table class="atm-retiro-resultado-panel__table">
+                <thead>
+                  <tr>
+                    <th scope="col">Denominación</th>
+                    <th scope="col">Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for(item of cantidadDenominacion(); track $index) {
+                  <tr>
+                    <td>{{ item.denominacion }}</td>
+                    <td>{{ item.cantidad }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <button class="atm-retiro__button" type="submit">
-          Calcular
-        </button>
-      </form>
-      <p class="atm-retiro__message">
-        Efectivo restante en el cajero:
-        <strong>{{ obtenerEfectivoRestante() | currency: 'MXN' }}</strong>
-      </p>
+        }
+      </div>
+
+      <!-- Columna 2: Tabla de billetes/monedas -->
+      <div class="atm-retiro-resultado-panel" *ngIf="actualizarBilletesMonedas().length > 0">
+        <h4 class="atm-retiro-resultado-panel__title">
+          Cantidad de Billetes y Monedas Restantes
+        </h4>
+        <div class="atm-retiro-resultado-panel__table-wrapper">
+          <table class="atm-retiro-resultado-panel__table">
+            <thead>
+              <tr>
+                <th scope="col">Denominación</th>
+                <th scope="col">Cantidad Restante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of actualizarBilletesMonedas()">
+                <td>{{ item.denominacion }} MXN</td>
+                <td>{{ item.cantidadDisponible }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-@if (cantidadDenominacion().length > 0) {
-<div class="animate__animated animate__fadeInRight">
-  <div class="atm-retiro-resultado-panel">
-    <h4 class="atm-retiro-resultado-panel__title">
-      Billetes y Monedas a Entregar:
-    </h4>
-    <div class="atm-retiro-resultado-panel__table-wrapper">
-      <table class="atm-retiro-resultado-panel__table">
-        <thead>
-          <tr>
-            <th scope="col">Denominación</th>
-            <th scope="col">Cantidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for(item of cantidadDenominacion(); track $index) {
-          <tr>
-            <td>{{ item.denominacion }}</td>
-            <td>{{ item.cantidad }}</td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-}
