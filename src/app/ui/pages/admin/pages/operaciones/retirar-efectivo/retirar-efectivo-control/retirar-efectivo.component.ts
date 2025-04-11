@@ -110,10 +110,8 @@ export class RetirarEfectivoComponent implements OnInit {
       }
     }
 
-    // Actualizamos el valor del signal
     this.actualizarBilletesMonedas.set(billetes);
 
-    // Verificamos si se pudo dar el monto exacto
     if (montoRestante > 0) {
       alert(
         'No se puede retirar la cantidad exacta con los billetes/monedas disponibles.',
