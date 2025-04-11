@@ -1,7 +1,7 @@
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormUtils } from 'src/app/libs/utils/form-utils';
-import { LoaderService } from 'src/app/ui/shared/services/loader.service';
+import { ResultadoRetiro } from '../interfaces/resultado-retiro.interface';
 import { RetirarEfectivoEntity } from 'src/app/core/domain/retirar-efectivo/entities/retirar-efectivo.entity';
 import { RetirarEfectivoFindService } from 'src/app/core/application/retirar-efectivo/use-cases/retirar-efectivo-find.service';
 
@@ -12,17 +12,15 @@ import { RetirarEfectivoFindService } from 'src/app/core/application/retirar-efe
   templateUrl: './retirar-efectivo.component.html',
 })
 export class RetirarEfectivoComponent implements OnInit {
-  public monto: number = 0;
-  public resultado: { denominacion: string; cantidad: number }[] = [];
+  public cantidadDenominacion: WritableSignal<ResultadoRetiro[]> = signal([]);
+  public actualizarBilletesMonedas: WritableSignal<RetirarEfectivoEntity[]> =
+    signal([]);
 
   public myForm: FormGroup;
   public formUtils: typeof FormUtils = FormUtils;
 
-  public billetesMonedas: WritableSignal<RetirarEfectivoEntity[]> = signal([]);
-
   constructor(
     private fb: FormBuilder,
-    private loaderService: LoaderService,
     private retirarEfectivoFindService: RetirarEfectivoFindService,
   ) {
     this.myForm = this.fb.group({
@@ -31,38 +29,39 @@ export class RetirarEfectivoComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.initializeComponent();
+    this.inicializarComponente();
   }
 
-  public async initializeComponent(): Promise<void> {
+  public async inicializarComponente(): Promise<void> {
     try {
-      await this.getData();
+      await this.obtenerCantidadDinero();
     } catch (error) {
       console.log(error);
     }
   }
 
-  public async getData(): Promise<void> {
+  public async obtenerCantidadDinero(): Promise<void> {
     try {
-      const response: any = await this.retirarEfectivoFindService.findAll();
-      this.billetesMonedas.set(response);
-      console.log(`Respuesta `, response);
+      const res: any = await this.retirarEfectivoFindService.findAll();
+      this.actualizarBilletesMonedas.set(res);
+      console.log(`Cantidad de dinero: `, this.actualizarBilletesMonedas());
     } catch (error) {
       console.log(error);
     }
   }
 
-  public getTotalDisponible(): number {
-    const data: RetirarEfectivoEntity[] = this.billetesMonedas();
-    return data.reduce(
-      (acc, item) =>
-        acc + (item.denominacion ?? 0) * (item.cantidadDisponible ?? 0),
+  public obtenerTotalDisponible(): number {
+    const response: RetirarEfectivoEntity[] = this.actualizarBilletesMonedas();
+    return response.reduce(
+      (totalDisponible, item) =>
+        totalDisponible +
+        (item.denominacion ?? 0) * (item.cantidadDisponible ?? 0),
       0,
     );
   }
 
-  public getEfectivoRestante(): number {
-    return this.getTotalDisponible();
+  public obtenerEfectivoRestante(): number {
+    return this.obtenerTotalDisponible();
   }
 
   public calcularRetiro(): void {
@@ -73,39 +72,46 @@ export class RetirarEfectivoComponent implements OnInit {
 
     const montoSolicitado: number = this.myForm.value.valueMonto;
 
-    if (montoSolicitado > this.getTotalDisponible()) {
+    if (montoSolicitado > this.obtenerTotalDisponible()) {
       alert('El monto solicitado excede el efectivo disponible en el cajero.');
       return;
     }
 
-    // Obtenemos una copia del array actual de billetes/monedas
-    const billetes = [...this.billetesMonedas()];
-    this.resultado = [];
-    let montoRestante = montoSolicitado;
+    // Obtenemos una copia del array actual
+    const billetes: RetirarEfectivoEntity[] = [
+      ...this.actualizarBilletesMonedas(),
+    ];
+    this.cantidadDenominacion.set([]);
+    let montoRestante: number = montoSolicitado;
 
     for (const item of billetes) {
-      const denominacion = item.denominacion ?? 0;
-      const cantidadDisponible = item.cantidadDisponible ?? 0;
+      const denominacion: number = item.denominacion ?? 0;
+      const cantidadDisponible: number = item.cantidadDisponible ?? 0;
 
       if (montoRestante >= denominacion && cantidadDisponible > 0) {
         let cantidad: number = Math.floor(montoRestante / denominacion);
         cantidad = Math.min(cantidad, cantidadDisponible);
 
         if (cantidad > 0) {
-          this.resultado.push({
-            denominacion: `${denominacion} MXN (${item.tipo})`,
-            cantidad,
-          });
+          const updatedResultado: ResultadoRetiro[] = [
+            ...this.cantidadDenominacion(),
+            {
+              cantidad,
+              denominacion: `${denominacion} MXN (${item.tipo})`,
+            },
+          ];
+
+          this.cantidadDenominacion.set(updatedResultado);
 
           montoRestante -= cantidad * denominacion;
-          montoRestante = parseFloat(montoRestante.toFixed(2)); // Control de decimales
+          montoRestante = parseFloat(montoRestante.toFixed(2));
           item.cantidadDisponible = cantidadDisponible - cantidad;
         }
       }
     }
 
     // Actualizamos el valor del signal
-    this.billetesMonedas.set(billetes);
+    this.actualizarBilletesMonedas.set(billetes);
 
     if (montoRestante > 0) {
       alert(

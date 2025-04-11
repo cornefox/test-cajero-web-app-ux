@@ -5,10 +5,10 @@
         <i class="pi pi-wallet"></i>
       </div>
       <h2 class="atm-retiro__title">Retirar Efectivo</h2>
-      <form [formGroup]="myForm" (ngSubmit)="calcularRetiro()" autocomplete="off" class="atm-retiro__form">
+      <form class="atm-retiro__form" [formGroup]="myForm" (ngSubmit)="calcularRetiro()" autocomplete="off">
         <div class="atm-retiro__campo">
-          <label for="monto" class="atm-retiro__campo-label">Monto a Retirar</label>
-          <input id="monto" type="text" formControlName="valueMonto" class="atm-retiro__campo-input" [ngClass]="{
+          <label class="atm-retiro__campo-label" for="valueMonto">Monto a Retirar</label>
+          <input class="atm-retiro__campo-input" type="text" formControlName="valueMonto" [ngClass]="{
                 'atm-retiro__campo-input--error':
                   myForm.controls['valueMonto'].invalid && myForm.controls['valueMonto'].touched
               }" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')" />
@@ -19,27 +19,30 @@
           </div>
           }
         </div>
-        <button type="submit" class="atm-retiro__button">
+        <button class="atm-retiro__button" type="submit">
           Calcular
         </button>
       </form>
       <p class="atm-retiro__message">
         Efectivo restante en el cajero:
-        <strong>{{ getEfectivoRestante() | currency: 'MXN' }}</strong>
+        <strong>{{ obtenerEfectivoRestante() | currency: 'MXN' }}</strong>
       </p>
     </div>
   </div>
 </div>
-@if (resultado.length > 0) {
-<div class="atm-retiro-resultado-panel animate__animated animate__fadeInRight">
-  <h4 class="atm-retiro-resultado-panel__title">
-    Billetes y Monedas a Entregar:
-  </h4>
-
-  <ul class="atm-retiro-resultado-panel__lista">
-    <li *ngFor="let item of resultado" class="atm-retiro-resultado-panel__item">
-      {{ item.denominacion }} x {{ item.cantidad }}
-    </li>
-  </ul>
-</div>
+@if (cantidadDenominacion().length > 0) {
+  <div class="animate__animated animate__fadeInRight">
+    <div class="atm-retiro-resultado-panel">
+      <h4 class="atm-retiro-resultado-panel__title">
+        Billetes y Monedas a Entregar:
+      </h4>
+      <ul class="atm-retiro-resultado-panel__lista">
+        @for(item of cantidadDenominacion(); track $index) {
+          <li  class="atm-retiro-resultado-panel__item">
+            {{ item.denominacion }} x {{ item.cantidad }}
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
 }
