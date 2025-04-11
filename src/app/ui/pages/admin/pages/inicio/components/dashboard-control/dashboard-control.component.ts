@@ -1,5 +1,4 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
-import { LoaderService } from 'src/app/ui/shared/services/loader.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-control',
@@ -8,14 +7,10 @@ import { LoaderService } from 'src/app/ui/shared/services/loader.service';
   templateUrl: './dashboard-control.component.html',
 })
 export class DashboardControlComponent implements OnInit {
-  public loading: WritableSignal<boolean> = signal(true);
-
-  constructor(private loaderService: LoaderService) {}
+  // constructor() {}
 
   public async ngOnInit(): Promise<void> {
-    this.loaderService.showLoader();
     await this.initializeComponent();
-    this.loaderService.hideLoader();
   }
 
   public async initializeComponent(): Promise<void> {
@@ -23,8 +18,6 @@ export class DashboardControlComponent implements OnInit {
       await Promise.all([]);
     } catch (error) {
       console.log(error);
-    } finally {
-      this.loading.set(false);
     }
   }
 }

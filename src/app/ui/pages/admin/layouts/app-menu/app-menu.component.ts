@@ -18,6 +18,7 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-home',
             label: 'Inicio',
             routerLink: ['/admin'],
+            routerLinkActiveOptions: { exact: false },
           },
           {
             icon: 'pi pi-wallet',
