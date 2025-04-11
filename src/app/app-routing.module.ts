@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'admin', // Manejo de rutas no encontradas
+    redirectTo: 'admin',
   },
 ];
 

@@ -81,7 +81,6 @@ export class RetirarEfectivoComponent implements OnInit {
       return;
     }
 
-    // Obtenemos una copia del array actual
     const billetes: RetirarEfectivoEntity[] = [
       ...this.actualizarBilletesMonedas(),
     ];
